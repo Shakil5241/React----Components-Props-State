@@ -1,13 +1,17 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import RatingSelect from "../RatingSelect"
 import Card from "./card"
 import Button from "./Button"
+import FeedbackContext from "../../Context/FeedbackContext"
 
 function FeedbackForm() {
     const [text, setText] = useState('')
     const [rating, setRating] = useState(10)
     const [btnDisabled,setBtnDisabled]=useState(true)
     const [message,setmessage]=useState('')
+    
+    const {addFeedback} = useContext(FeedbackContext)
+
     const handleTextChange = (e) => {
         if(text==='') {
             setBtnDisabled(true)
@@ -26,13 +30,14 @@ function FeedbackForm() {
         if(text.trim().length>10){
             const newFeedback ={
                 text,
-                rating
+                rating,
             }
-            console.log(newFeedback)
+            addFeedback(newFeedback)
+            setText('')
         }
     }
   return (
-    <Card>
+    <Card >
      <form onSubmit={handleSubmit}>
          <h2>How would you rate your service with us?</h2>
          <RatingSelect select={(rating) =>setRating(rating)} />
